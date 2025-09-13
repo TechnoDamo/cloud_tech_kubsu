@@ -1,0 +1,99 @@
+@startuml
+left to right direction
+!define RECTANGLE class
+
+' --------------------
+' Class-related domain
+package "Class & Students" {
+    RECTANGLE Classes {
+        +id : bigserial [PK]
+        grade : int
+        letter : char(1)
+    }
+
+    RECTANGLE Students {
+        +id : bigserial [PK]
+        class_id : bigint [FK]
+        first_name : varchar
+        last_name : varchar
+        patronymic : varchar
+    }
+}
+
+' --------------------
+' Teacher & Subject domain
+package "Teachers & Subjects" {
+    RECTANGLE Teacher {
+        +id : bigserial [PK]
+        first_name : varchar
+        last_name : varchar
+        patronymic : varchar
+    }
+
+    RECTANGLE Subjects {
+        +id : bigserial [PK]
+        subject_name : varchar
+    }
+
+    RECTANGLE TeacherAssignments {
+        +id : bigserial [PK]
+        teacher_id : bigint [FK]
+        subject_id : bigint [FK]
+    }
+}
+
+' --------------------
+' Lesson domain
+package "Lessons & Attendance" {
+    RECTANGLE LessonSchedule {
+        +id : bigserial [PK]
+        subject_id : bigint [FK]
+        class_id : bigint [FK]
+        teacher_id : bigint [FK]
+        weekday : int
+        number : int
+    }
+
+    RECTANGLE LessonOccurrences {
+        +id : bigserial [PK]
+        subject_id : bigint [FK]
+        class_id : bigint [FK]
+        teacher_id : bigint [FK]
+        date : date
+        number : int
+    }
+
+    RECTANGLE AttendanceStatuses {
+        +code : char(1) [PK]
+        description : varchar
+    }
+
+    RECTANGLE StudentLessons {
+        +id : bigserial [PK]
+        student_id : bigint [FK]
+        lesson_id : bigint [FK]
+        grade : int
+        attendance_status : char(1) [FK -> AttendanceStatuses.code]
+    }
+}
+
+' --------------------
+' Table-level relationships (classic ER style with multiplicities)
+Classes ||--o{ Students
+Students ||--o{ StudentLessons
+LessonOccurrences ||--o{ StudentLessons
+AttendanceStatuses ||--o{ StudentLessons
+
+Teacher ||--o{ TeacherAssignments
+Subjects ||--o{ TeacherAssignments
+
+Classes ||--o{ LessonSchedule
+Teacher ||--o{ LessonSchedule
+Subjects ||--o{ LessonSchedule
+
+Classes ||--o{ LessonOccurrences
+Teacher ||--o{ LessonOccurrences
+Subjects ||--o{ LessonOccurrences
+LessonSchedule ||--o{ LessonOccurrences 
+
+@enduml
