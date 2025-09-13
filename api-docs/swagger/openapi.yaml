@@ -2,10 +2,32 @@
 openapi: 3.0.3
 info:
   title: School Management API
-  version: 1.0.0
+  description: |
+    A comprehensive REST API for managing school operations including classes, students, teachers, subjects, lesson schedules, and attendance tracking.
+    
+    ## Features
+    - **Class Management**: Create and manage school classes with grade levels and letters
+    - **Student Management**: Handle student enrollment and information
+    - **Teacher Management**: Manage teacher profiles and assignments
+    - **Subject Management**: Organize school subjects and curriculum
+    - **Lesson Scheduling**: Plan and manage weekly lesson schedules
+    - **Lesson Logging**: Track actual lessons that occurred
+    - **Attendance & Grading**: Record student attendance and grades
+    - **Teacher Assignments**: Link teachers to specific subjects
+    
+    ## Data Model
+    The API follows a relational data model where:
+    - Students belong to Classes
+    - Teachers are assigned to Subjects via TeacherAssignments
+    - LessonSchedules define when subjects are taught to classes
+    - LessonLogs record actual lessons that happened
+    - StudentLessons track individual student participation, grades, and attendance
+    
 servers:
   - url: https://technodamo.github.io/cloud_tech_kubsu/api-docs/swagger/
-    description: GitHub Pages server
+    description: GitHub Pages server (Production)
+  - url: http://localhost:8000/api/v1
+    description: Local development server
 tags:
   - name: Classes
     description: Endpoints related to school classes
@@ -31,33 +53,78 @@ paths:
       tags:
         - Classes
       summary: List all classes
+      operationId: listClasses
+      parameters:
+        - in: query
+          name: grade
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+          description: Filter by grade level
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
       responses:
         "200":
           description: A list of classes
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Class"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Class"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
         - Classes
       summary: Create a new class
+      operationId: createClass
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Class"
+              $ref: "#/components/schemas/ClassInput"
       responses:
         "201":
           description: Class created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Class"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/classes/{id}":
     get:
       tags:
         - Classes
       summary: Get class by ID
+      operationId: getClass
       parameters:
         - in: path
           name: id
@@ -71,12 +138,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Class"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
-          description: Not found
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
         - Classes
       summary: Update class
+      operationId: updateClass
       parameters:
         - in: path
           name: id
@@ -88,14 +160,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Class"
+              $ref: "#/components/schemas/ClassInput"
       responses:
         "200":
           description: Class updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Class"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
         - Classes
       summary: Delete class
+      operationId: deleteClass
       parameters:
         - in: path
           name: id
@@ -103,40 +188,100 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        "204":
           description: Class deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  
   /students:
     get:
       tags:
         - Students
       summary: List all students
+      operationId: listStudents
+      parameters:
+        - in: query
+          name: class_id
+          schema:
+            type: integer
+          description: Filter by class ID
+        - in: query
+          name: first_name
+          schema:
+            type: string
+          description: Filter by first name (partial match)
+        - in: query
+          name: last_name
+          schema:
+            type: string
+          description: Filter by last name (partial match)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
       responses:
         "200":
           description: A list of students
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Student"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Student"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
         - Students
       summary: Create a new student
+      operationId: createStudent
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Student"
+              $ref: "#/components/schemas/StudentInput"
       responses:
         "201":
           description: Student created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/students/{id}":
     get:
       tags:
         - Students
       summary: Get student by ID
+      operationId: getStudent
       parameters:
         - in: path
           name: id
@@ -150,12 +295,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Student"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
-          description: Not found
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
         - Students
       summary: Update student
+      operationId: updateStudent
       parameters:
         - in: path
           name: id
@@ -167,14 +317,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Student"
+              $ref: "#/components/schemas/StudentInput"
       responses:
         "200":
           description: Student updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
         - Students
       summary: Delete student
+      operationId: deleteStudent
       parameters:
         - in: path
           name: id
@@ -182,40 +345,95 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        "204":
           description: Student deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  
   /teachers:
     get:
       tags:
         - Teachers
       summary: List all teachers
+      operationId: listTeachers
+      parameters:
+        - in: query
+          name: first_name
+          schema:
+            type: string
+          description: Filter by first name (partial match)
+        - in: query
+          name: last_name
+          schema:
+            type: string
+          description: Filter by last name (partial match)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
       responses:
         "200":
           description: A list of teachers
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Teacher"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Teacher"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
         - Teachers
       summary: Create a new teacher
+      operationId: createTeacher
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Teacher"
+              $ref: "#/components/schemas/TeacherInput"
       responses:
         "201":
           description: Teacher created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Teacher"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/teachers/{id}":
     get:
       tags:
         - Teachers
       summary: Get teacher by ID
+      operationId: getTeacher
       parameters:
         - in: path
           name: id
@@ -229,12 +447,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Teacher"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
-          description: Not found
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
         - Teachers
       summary: Update teacher
+      operationId: updateTeacher
       parameters:
         - in: path
           name: id
@@ -246,14 +469,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Teacher"
+              $ref: "#/components/schemas/TeacherInput"
       responses:
         "200":
           description: Teacher updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Teacher"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
         - Teachers
       summary: Delete teacher
+      operationId: deleteTeacher
       parameters:
         - in: path
           name: id
@@ -261,40 +497,90 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        "204":
           description: Teacher deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  
   /subjects:
     get:
       tags:
         - Subjects
       summary: List all subjects
+      operationId: listSubjects
+      parameters:
+        - in: query
+          name: subject_name
+          schema:
+            type: string
+          description: Filter by subject name (partial match)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
       responses:
         "200":
           description: A list of subjects
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Subject"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Subject"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
         - Subjects
       summary: Create a new subject
+      operationId: createSubject
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Subject"
+              $ref: "#/components/schemas/SubjectInput"
       responses:
         "201":
           description: Subject created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subject"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/subjects/{id}":
     get:
       tags:
         - Subjects
       summary: Get subject by ID
+      operationId: getSubject
       parameters:
         - in: path
           name: id
@@ -308,12 +594,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Subject"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
-          description: Not found
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
         - Subjects
       summary: Update subject
+      operationId: updateSubject
       parameters:
         - in: path
           name: id
@@ -325,14 +616,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Subject"
+              $ref: "#/components/schemas/SubjectInput"
       responses:
         "200":
           description: Subject updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subject"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
         - Subjects
       summary: Delete subject
+      operationId: deleteSubject
       parameters:
         - in: path
           name: id
@@ -340,40 +644,95 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        "204":
           description: Subject deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+ 
   /teacher-assignments:
     get:
       tags:
         - TeacherAssignments
       summary: List all teacher assignments
+      operationId: listTeacherAssignments
+      parameters:
+        - in: query
+          name: teacher_id
+          schema:
+            type: integer
+          description: Filter by teacher ID
+        - in: query
+          name: subject_id
+          schema:
+            type: integer
+          description: Filter by subject ID
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
       responses:
         "200":
           description: A list of teacher assignments
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TeacherAssignment"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TeacherAssignment"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags:
         - TeacherAssignments
       summary: Create a new teacher assignment
+      operationId: createTeacherAssignment
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeacherAssignment"
+              $ref: "#/components/schemas/TeacherAssignmentInput"
       responses:
         "201":
           description: Assignment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeacherAssignment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/teacher-assignments/{id}":
     get:
       tags:
         - TeacherAssignments
       summary: Get teacher assignment by ID
+      operationId: getTeacherAssignment
       parameters:
         - in: path
           name: id
@@ -387,12 +746,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TeacherAssignment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
-          description: Not found
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     put:
       tags:
         - TeacherAssignments
       summary: Update teacher assignment
+      operationId: updateTeacherAssignment
       parameters:
         - in: path
           name: id
@@ -404,14 +768,140 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeacherAssignment"
+              $ref: "#/components/schemas/TeacherAssignmentInput"
       responses:
         "200":
           description: Assignment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeacherAssignment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     delete:
       tags:
         - TeacherAssignments
       summary: Delete teacher assignment
+      operationId: deleteTeacherAssignment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Assignment deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+ 
+  /lesson-logs:
+    get:
+      tags:
+        - LessonLogs
+      summary: List all lesson logs
+      operationId: listLessonLogs
+      parameters:
+        - in: query
+          name: class_id
+          schema:
+            type: integer
+          description: Filter by class ID
+        - in: query
+          name: teacher_id
+          schema:
+            type: integer
+          description: Filter by teacher ID
+        - in: query
+          name: subject_id
+          schema:
+            type: integer
+          description: Filter by subject ID
+        - in: query
+          name: date_from
+          schema:
+            type: string
+            format: date
+          description: Filter from date (YYYY-MM-DD)
+        - in: query
+          name: date_to
+          schema:
+            type: string
+            format: date
+          description: Filter to date (YYYY-MM-DD)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
+      responses:
+        "200":
+          description: A list of lesson logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/LessonLog"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - LessonLogs
+      summary: Create a new lesson log
+      operationId: createLessonLog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LessonLogInput"
+      responses:
+        "201":
+          description: Lesson log created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonLog"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/lesson-logs/{id}":
+    get:
+      tags:
+        - LessonLogs
+      summary: Get lesson log by ID
+      operationId: getLessonLog
       parameters:
         - in: path
           name: id
@@ -420,380 +910,1078 @@ paths:
             type: integer
       responses:
         "200":
-          description: Assignment deleted
-/lesson-logs:
-  get:
-    tags:
-      - LessonLogs
-    summary: List all lesson logs
-    responses:
-      "200":
-        description: A list of lesson logs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
+          description: Lesson log found
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/LessonLog"
-  post:
-    tags:
-      - LessonLogs
-    summary: Create a new lesson log
-    requestBody:
-      required: true
-      content:
-        application/json:
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - LessonLogs
+      summary: Update lesson log
+      operationId: updateLessonLog
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/components/schemas/LessonLog"
-    responses:
-      "201":
-        description: Lesson log created
-"/lesson-logs/{id}":
-  get:
-    tags:
-      - LessonLogs
-    summary: Get lesson log by ID
-    parameters:
-      - in: path
-        name: id
+            type: integer
+      requestBody:
         required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Lesson log found
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LessonLog"
-      "404":
-        description: Not found
-  put:
-    tags:
-      - LessonLogs
-    summary: Update lesson log
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      required: true
-      content:
-        application/json:
+              $ref: "#/components/schemas/LessonLogInput"
+      responses:
+        "200":
+          description: Lesson log updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonLog"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - LessonLogs
+      summary: Delete lesson log
+      operationId: deleteLessonLog
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/components/schemas/LessonLog"
-    responses:
-      "200":
-        description: Lesson log updated
-  delete:
-    tags:
-      - LessonLogs
-    summary: Delete lesson log
-    parameters:
-      - in: path
-        name: id
+            type: integer
+      responses:
+        "204":
+          description: Lesson log deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+ 
+  /student-lessons:
+    get:
+      tags:
+        - StudentLessons
+      summary: List all student lessons
+      operationId: listStudentLessons
+      parameters:
+        - in: query
+          name: student_id
+          schema:
+            type: integer
+          description: Filter by student ID
+        - in: query
+          name: lesson_id
+          schema:
+            type: integer
+          description: Filter by lesson ID
+        - in: query
+          name: class_id
+          schema:
+            type: integer
+          description: Filter by class ID
+        - in: query
+          name: attendance_status
+          schema:
+            type: string
+            maxLength: 1
+          description: Filter by attendance status
+        - in: query
+          name: has_grade
+          schema:
+            type: boolean
+          description: Filter by whether grade is present
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
+      responses:
+        "200":
+          description: A list of student lessons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StudentLesson"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - StudentLessons
+      summary: Create a student lesson
+      operationId: createStudentLesson
+      requestBody:
         required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Lesson log deleted
-/student-lessons:
-  get:
-    tags:
-      - StudentLessons
-    summary: List all student lessons
-    responses:
-      "200":
-        description: A list of student lessons
         content:
           application/json:
             schema:
-              type: array
-              items:
+              $ref: "#/components/schemas/StudentLessonInput"
+      responses:
+        "201":
+          description: Student lesson created
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/StudentLesson"
-  post:
-    tags:
-      - StudentLessons
-    summary: Create a student lesson
-    requestBody:
-      required: true
-      content:
-        application/json:
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/student-lessons/{id}":
+    get:
+      tags:
+        - StudentLessons
+      summary: Get student lesson by ID
+      operationId: getStudentLesson
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/components/schemas/StudentLesson"
-    responses:
-      "201":
-        description: Student lesson created
-"/student-lessons/{id}":
-  get:
-    tags:
-      - StudentLessons
-    summary: Get student lesson by ID
-    parameters:
-      - in: path
-        name: id
+            type: integer
+      responses:
+        "200":
+          description: Student lesson found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentLesson"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - StudentLessons
+      summary: Update student lesson
+      operationId: updateStudentLesson
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
         required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Student lesson found
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StudentLesson"
-      "404":
-        description: Not found
-  put:
-    tags:
-      - StudentLessons
-    summary: Update student lesson
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      required: true
-      content:
-        application/json:
+              $ref: "#/components/schemas/StudentLessonInput"
+      responses:
+        "200":
+          description: Student lesson updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentLesson"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - StudentLessons
+      summary: Delete student lesson
+      operationId: deleteStudentLesson
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/components/schemas/StudentLesson"
-    responses:
-      "200":
-        description: Student lesson updated
-  delete:
-    tags:
-      - StudentLessons
-    summary: Delete student lesson
-    parameters:
-      - in: path
-        name: id
+            type: integer
+      responses:
+        "204":
+          description: Student lesson deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /lesson-schedules:
+    get:
+      tags:
+        - LessonSchedule
+      summary: List all lesson schedules
+      operationId: listLessonSchedules
+      parameters:
+        - in: query
+          name: class_id
+          schema:
+            type: integer
+          description: Filter by class ID
+        - in: query
+          name: teacher_id
+          schema:
+            type: integer
+          description: Filter by teacher ID
+        - in: query
+          name: subject_id
+          schema:
+            type: integer
+          description: Filter by subject ID
+        - in: query
+          name: weekday
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 6
+          description: Filter by weekday (0=Sunday, 6=Saturday)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
+      responses:
+        "200":
+          description: A list of lesson schedules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/LessonSchedule"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - LessonSchedule
+      summary: Create a new lesson schedule
+      operationId: createLessonSchedule
+      requestBody:
         required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Student lesson deleted
-/attendance-statuses:
-  get:
-    tags:
-      - AttendanceStatuses
-    summary: List all attendance statuses
-    responses:
-      "200":
-        description: A list of attendance statuses
         content:
           application/json:
             schema:
-              type: array
-              items:
+              $ref: "#/components/schemas/LessonScheduleInput"
+      responses:
+        "201":
+          description: Lesson schedule created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonSchedule"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/lesson-schedules/{id}":
+    get:
+      tags:
+        - LessonSchedule
+      summary: Get lesson schedule by ID
+      operationId: getLessonSchedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lesson schedule found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonSchedule"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - LessonSchedule
+      summary: Update lesson schedule
+      operationId: updateLessonSchedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LessonScheduleInput"
+      responses:
+        "200":
+          description: Lesson schedule updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonSchedule"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - LessonSchedule
+      summary: Delete lesson schedule
+      operationId: deleteLessonSchedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Lesson schedule deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /attendance-statuses:
+    get:
+      tags:
+        - AttendanceStatuses
+      summary: List all attendance statuses
+      operationId: listAttendanceStatuses
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page
+      responses:
+        "200":
+          description: A list of attendance statuses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AttendanceStatus"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - AttendanceStatuses
+      summary: Create a new attendance status
+      operationId: createAttendanceStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttendanceStatusInput"
+      responses:
+        "201":
+          description: Attendance status created
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/AttendanceStatus"
-  post:
-    tags:
-      - AttendanceStatuses
-    summary: Create a new attendance status
-    requestBody:
-      required: true
-      content:
-        application/json:
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/attendance-statuses/{code}":
+    get:
+      tags:
+        - AttendanceStatuses
+      summary: Get attendance status by code
+      operationId: getAttendanceStatus
+      parameters:
+        - in: path
+          name: code
+          required: true
           schema:
-            $ref: "#/components/schemas/AttendanceStatus"
-    responses:
-      "201":
-        description: Attendance status created
-"/attendance-statuses/{code}":
-  get:
-    tags:
-      - AttendanceStatuses
-    summary: Get attendance status by code
-    parameters:
-      - in: path
-        name: code
+            type: string
+            maxLength: 1
+      responses:
+        "200":
+          description: Attendance status found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceStatus"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - AttendanceStatuses
+      summary: Update attendance status
+      operationId: updateAttendanceStatus
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+            maxLength: 1
+      requestBody:
         required: true
-        schema:
-          type: string
-    responses:
-      "200":
-        description: Attendance status found
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AttendanceStatus"
-      "404":
-        description: Not found
-  put:
-    tags:
-      - AttendanceStatuses
-    summary: Update attendance status
-    parameters:
-      - in: path
-        name: code
-        required: true
-        schema:
-          type: string
-    requestBody:
-      required: true
-      content:
-        application/json:
+              $ref: "#/components/schemas/AttendanceStatusInput"
+      responses:
+        "200":
+          description: Attendance status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceStatus"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - AttendanceStatuses
+      summary: Delete attendance status
+      operationId: deleteAttendanceStatus
+      parameters:
+        - in: path
+          name: code
+          required: true
           schema:
-            $ref: "#/components/schemas/AttendanceStatus"
-    responses:
-      "200":
-        description: Attendance status updated
-  delete:
-    tags:
-      - AttendanceStatuses
-    summary: Delete attendance status
-    parameters:
-      - in: path
-        name: code
-        required: true
-        schema:
-          type: string
-    responses:
-      "200":
-        description: Attendance status deleted
+            type: string
+            maxLength: 1
+      responses:
+        "204":
+          description: Attendance status deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
 components:
   schemas:
+    # Core Entity Schemas
     Class:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the class
         grade:
           type: integer
+          minimum: 1
+          maximum: 12
+          description: Grade level (1-12)
         letter:
           type: string
+          minLength: 1
           maxLength: 1
+          pattern: "^[A-Z]$"
+          description: Class letter (A-Z)
       required:
         - grade
         - letter
+      example:
+        id: 1
+        grade: 10
+        letter: "A"
+
     Student:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the student
         class_id:
           type: integer
+          description: ID of the class the student belongs to
         first_name:
           type: string
+          minLength: 1
+          maxLength: 50
+          description: Student's first name
         last_name:
           type: string
+          minLength: 1
+          maxLength: 50
+          description: Student's last name
         patronymic:
           type: string
+          maxLength: 50
+          description: Student's patronymic (optional)
       required:
         - class_id
         - first_name
         - last_name
+      example:
+        id: 1
+        class_id: 1
+        first_name: "Иван"
+        last_name: "Иванов"
+        patronymic: "Иванович"
+
     Teacher:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the teacher
         first_name:
           type: string
+          minLength: 1
+          maxLength: 50
+          description: Teacher's first name
         last_name:
           type: string
+          minLength: 1
+          maxLength: 50
+          description: Teacher's last name
         patronymic:
           type: string
+          maxLength: 50
+          description: Teacher's patronymic (optional)
       required:
         - first_name
         - last_name
+      example:
+        id: 1
+        first_name: "Мария"
+        last_name: "Петрова"
+        patronymic: "Сергеевна"
+
     Subject:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the subject
         subject_name:
           type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the subject
       required:
         - subject_name
+      example:
+        id: 1
+        subject_name: "Математика"
+
     TeacherAssignment:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the assignment
         teacher_id:
           type: integer
+          description: ID of the assigned teacher
         subject_id:
           type: integer
+          description: ID of the assigned subject
       required:
         - teacher_id
         - subject_id
+      example:
+        id: 1
+        teacher_id: 1
+        subject_id: 1
+
     LessonSchedule:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the schedule entry
         subject_id:
           type: integer
+          description: ID of the subject
         weekday:
           type: integer
+          minimum: 0
+          maximum: 6
+          description: Day of the week (0=Sunday, 6=Saturday)
         number:
           type: integer
+          minimum: 1
+          maximum: 8
+          description: Lesson number in the day (1-8)
         class_id:
           type: integer
+          description: ID of the class
         teacher_id:
           type: integer
+          description: ID of the teacher
       required:
         - subject_id
         - weekday
         - number
         - class_id
         - teacher_id
+      example:
+        id: 1
+        subject_id: 1
+        weekday: 1
+        number: 1
+        class_id: 1
+        teacher_id: 1
+
     LessonLog:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the lesson log
         subject_id:
           type: integer
+          description: ID of the subject
         date:
           type: string
           format: date
+          description: Date when the lesson occurred (YYYY-MM-DD)
         number:
           type: integer
+          minimum: 1
+          maximum: 8
+          description: Lesson number in the day (1-8)
         class_id:
           type: integer
+          description: ID of the class
         teacher_id:
           type: integer
+          description: ID of the teacher
       required:
         - subject_id
         - date
         - number
         - class_id
         - teacher_id
+      example:
+        id: 1
+        subject_id: 1
+        date: "2024-01-15"
+        number: 1
+        class_id: 1
+        teacher_id: 1
+
     StudentLesson:
       type: object
       properties:
         id:
           type: integer
+          description: Unique identifier for the student lesson record
         student_id:
           type: integer
+          description: ID of the student
         lesson_id:
           type: integer
+          description: ID of the lesson log
         grade:
           type: integer
+          minimum: 1
+          maximum: 5
+          description: Grade received (1-5, null if not graded)
         attendance_status:
           type: string
+          minLength: 1
           maxLength: 1
+          pattern: "^[PAL]$"
+          description: Attendance status (P=Present, A=Absent, L=Late)
       required:
         - student_id
         - lesson_id
         - attendance_status
+      example:
+        id: 1
+        student_id: 1
+        lesson_id: 1
+        grade: 5
+        attendance_status: "P"
+
     AttendanceStatus:
       type: object
       properties:
         code:
           type: string
+          minLength: 1
           maxLength: 1
+          pattern: "^[PAL]$"
+          description: Single character code for attendance status
         description:
           type: string
+          minLength: 1
+          maxLength: 50
+          description: Human-readable description of the status
       required:
         - code
         - description
+      example:
+        code: "P"
+        description: "Present"
+
+    # Input Schemas (without IDs)
+    ClassInput:
+      type: object
+      properties:
+        grade:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Grade level (1-12)
+        letter:
+          type: string
+          minLength: 1
+          maxLength: 1
+          pattern: "^[A-Z]$"
+          description: Class letter (A-Z)
+      required:
+        - grade
+        - letter
+
+    StudentInput:
+      type: object
+      properties:
+        class_id:
+          type: integer
+          description: ID of the class the student belongs to
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Student's first name
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Student's last name
+        patronymic:
+          type: string
+          maxLength: 50
+          description: Student's patronymic (optional)
+      required:
+        - class_id
+        - first_name
+        - last_name
+
+    TeacherInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Teacher's first name
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Teacher's last name
+        patronymic:
+          type: string
+          maxLength: 50
+          description: Teacher's patronymic (optional)
+      required:
+        - first_name
+        - last_name
+
+    SubjectInput:
+      type: object
+      properties:
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the subject
+      required:
+        - subject_name
+
+    TeacherAssignmentInput:
+      type: object
+      properties:
+        teacher_id:
+          type: integer
+          description: ID of the assigned teacher
+        subject_id:
+          type: integer
+          description: ID of the assigned subject
+      required:
+        - teacher_id
+        - subject_id
+
+    LessonScheduleInput:
+      type: object
+      properties:
+        subject_id:
+          type: integer
+          description: ID of the subject
+        weekday:
+          type: integer
+          minimum: 0
+          maximum: 6
+          description: Day of the week (0=Sunday, 6=Saturday)
+        number:
+          type: integer
+          minimum: 1
+          maximum: 8
+          description: Lesson number in the day (1-8)
+        class_id:
+          type: integer
+          description: ID of the class
+        teacher_id:
+          type: integer
+          description: ID of the teacher
+      required:
+        - subject_id
+        - weekday
+        - number
+        - class_id
+        - teacher_id
+
+    LessonLogInput:
+      type: object
+      properties:
+        subject_id:
+          type: integer
+          description: ID of the subject
+        date:
+          type: string
+          format: date
+          description: Date when the lesson occurred (YYYY-MM-DD)
+        number:
+          type: integer
+          minimum: 1
+          maximum: 8
+          description: Lesson number in the day (1-8)
+        class_id:
+          type: integer
+          description: ID of the class
+        teacher_id:
+          type: integer
+          description: ID of the teacher
+      required:
+        - subject_id
+        - date
+        - number
+        - class_id
+        - teacher_id
+
+    StudentLessonInput:
+      type: object
+      properties:
+        student_id:
+          type: integer
+          description: ID of the student
+        lesson_id:
+          type: integer
+          description: ID of the lesson log
+        grade:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Grade received (1-5, optional)
+        attendance_status:
+          type: string
+          minLength: 1
+          maxLength: 1
+          pattern: "^[PAL]$"
+          description: Attendance status (P=Present, A=Absent, L=Late)
+      required:
+        - student_id
+        - lesson_id
+        - attendance_status
+
+    AttendanceStatusInput:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 1
+          pattern: "^[PAL]$"
+          description: Single character code for attendance status
+        description:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Human-readable description of the status
+      required:
+        - code
+        - description
+
+    # Utility Schemas
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      required:
+        - page
+        - limit
+        - total
+        - pages
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details
+      required:
+        - error
+        - message
+
+  # Reusable Response Definitions
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: "BadRequest"
+            message: "Invalid input parameters"
+            details:
+              field: "grade"
+              issue: "Must be between 1 and 12"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: "NotFound"
+            message: "Resource not found"
+
+    UnprocessableEntity:
+      description: Unprocessable Entity - Business logic validation failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: "UnprocessableEntity"
+            message: "Business logic validation failed"
+            details:
+              field: "teacher_id"
+              issue: "Teacher is already assigned to this subject"
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: "InternalServerError"
+            message: "An unexpected error occurred"
