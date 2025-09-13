@@ -3,10 +3,11 @@ info:
   title: School Management API
   version: 1.0.0
 servers:
-  - url: https://technodamo.github.io/cloud_tech_kubsu/
+  - url: https://technodamo.github.io/cloud_tech_kubsu/api-docs/swagger/
     description: GitHub Pages server
 
 paths:
+  # -------------------- Classes --------------------
   /classes:
     get:
       summary: List all classes
@@ -30,10 +31,6 @@ paths:
       responses:
         '201':
           description: Class created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Class'
 
   /classes/{id}:
     get:
@@ -82,8 +79,564 @@ paths:
         '200':
           description: Class deleted
 
-# Repeat similar paths for Students, Teachers, Subjects, TeacherAssignments, LessonSchedule,
-# LessonLogs, StudentLessons, AttendanceStatuses
+  # -------------------- Students --------------------
+  /students:
+    get:
+      summary: List all students
+      responses:
+        '200':
+          description: A list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '201':
+          description: Student created
+
+  /students/{id}:
+    get:
+      summary: Get student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Not found
+    put:
+      summary: Update student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student updated
+    delete:
+      summary: Delete student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student deleted
+
+  # -------------------- Teachers --------------------
+  /teachers:
+    get:
+      summary: List all teachers
+      responses:
+        '200':
+          description: A list of teachers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+    post:
+      summary: Create a new teacher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        '201':
+          description: Teacher created
+
+  /teachers/{id}:
+    get:
+      summary: Get teacher by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Teacher found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        '404':
+          description: Not found
+    put:
+      summary: Update teacher
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        '200':
+          description: Teacher updated
+    delete:
+      summary: Delete teacher
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Teacher deleted
+
+  # -------------------- Subjects --------------------
+  /subjects:
+    get:
+      summary: List all subjects
+      responses:
+        '200':
+          description: A list of subjects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subject'
+    post:
+      summary: Create a new subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject'
+      responses:
+        '201':
+          description: Subject created
+
+  /subjects/{id}:
+    get:
+      summary: Get subject by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Subject found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subject'
+        '404':
+          description: Not found
+    put:
+      summary: Update subject
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject'
+      responses:
+        '200':
+          description: Subject updated
+    delete:
+      summary: Delete subject
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Subject deleted
+# -------------------- TeacherAssignments --------------------
+  /teacher-assignments:
+    get:
+      summary: List all teacher assignments
+      responses:
+        '200':
+          description: A list of teacher assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeacherAssignment'
+    post:
+      summary: Create a new teacher assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherAssignment'
+      responses:
+        '201':
+          description: Teacher assignment created
+
+  /teacher-assignments/{id}:
+    get:
+      summary: Get teacher assignment by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Assignment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherAssignment'
+        '404':
+          description: Not found
+    put:
+      summary: Update teacher assignment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherAssignment'
+      responses:
+        '200':
+          description: Assignment updated
+    delete:
+      summary: Delete teacher assignment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Assignment deleted
+
+# -------------------- LessonSchedule --------------------
+  /lesson-schedules:
+    get:
+      summary: List all lesson schedules
+      responses:
+        '200':
+          description: A list of lesson schedules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LessonSchedule'
+    post:
+      summary: Create a new lesson schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonSchedule'
+      responses:
+        '201':
+          description: Lesson schedule created
+
+  /lesson-schedules/{id}:
+    get:
+      summary: Get lesson schedule by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Schedule found
+        '404':
+          description: Not found
+    put:
+      summary: Update lesson schedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonSchedule'
+      responses:
+        '200':
+          description: Schedule updated
+    delete:
+      summary: Delete lesson schedule
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Schedule deleted
+
+# -------------------- LessonLogs --------------------
+  /lesson-logs:
+    get:
+      summary: List all lesson logs
+      responses:
+        '200':
+          description: A list of lesson logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LessonLog'
+    post:
+      summary: Create a lesson log
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonLog'
+      responses:
+        '201':
+          description: Lesson log created
+
+  /lesson-logs/{id}:
+    get:
+      summary: Get lesson log by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lesson log found
+        '404':
+          description: Not found
+    put:
+      summary: Update lesson log
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonLog'
+      responses:
+        '200':
+          description: Lesson log updated
+    delete:
+      summary: Delete lesson log
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lesson log deleted
+
+# -------------------- StudentLessons --------------------
+  /student-lessons:
+    get:
+      summary: List all student lessons
+      responses:
+        '200':
+          description: A list of student lessons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentLesson'
+    post:
+      summary: Create a student lesson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentLesson'
+      responses:
+        '201':
+          description: Student lesson created
+
+  /student-lessons/{id}:
+    get:
+      summary: Get student lesson by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student lesson found
+        '404':
+          description: Not found
+    put:
+      summary: Update student lesson
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentLesson'
+      responses:
+        '200':
+          description: Student lesson updated
+    delete:
+      summary: Delete student lesson
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student lesson deleted
+
+# -------------------- AttendanceStatuses --------------------
+  /attendance-statuses:
+    get:
+      summary: List all attendance statuses
+      responses:
+        '200':
+          description: A list of attendance statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceStatus'
+    post:
+      summary: Create a new attendance status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceStatus'
+      responses:
+        '201':
+          description: Attendance status created
+
+  /attendance-statuses/{code}:
+    get:
+      summary: Get attendance status by code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status found
+        '404':
+          description: Not found
+    put:
+      summary: Update attendance status
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceStatus'
+      responses:
+        '200':
+          description: Attendance status updated
+    delete:
+      summary: Delete attendance status
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Attendance status deleted
 
 components:
   schemas:
@@ -143,6 +696,83 @@ components:
           type: string
       required:
         - subject_name
+
+    TeacherAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+        teacher_id:
+          type: integer
+        subject_id:
+          type: integer
+      required:
+        - teacher_id
+        - subject_id
+
+    LessonSchedule:
+      type: object
+      properties:
+        id:
+          type: integer
+        subject_id:
+          type: integer
+        weekday:
+          type: integer
+        number:
+          type: integer
+        class_id:
+          type: integer
+        teacher_id:
+          type: integer
+      required:
+        - subject_id
+        - weekday
+        - number
+        - class_id
+        - teacher_id
+
+    LessonLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        subject_id:
+          type: integer
+        date:
+          type: string
+          format: date
+        number:
+          type: integer
+        class_id:
+          type: integer
+        teacher_id:
+          type: integer
+      required:
+        - subject_id
+        - date
+        - number
+        - class_id
+        - teacher_id
+
+    StudentLesson:
+      type: object
+      properties:
+        id:
+          type: integer
+        student_id:
+          type: integer
+        lesson_id:
+          type: integer
+        grade:
+          type: integer
+        attendance_status:
+          type: string
+          maxLength: 1
+      required:
+        - student_id
+        - lesson_id
+        - attendance_status
 
     AttendanceStatus:
       type: object
