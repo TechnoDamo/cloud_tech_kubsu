@@ -3,7 +3,7 @@ info:
   title: School Management API
   version: 1.0.0
 servers:
-  - url: https://yourusername.github.io/school-api
+  - url: https://technodamo.github.io/cloud_tech_kubsu/
     description: GitHub Pages server
 
 paths:
