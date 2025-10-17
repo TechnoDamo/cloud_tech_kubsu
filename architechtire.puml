@@ -1,0 +1,56 @@
+participant Client as cl 
+participant Yandex_Gateway as gate
+participant S3 as s3
+participant Serverless_Container as sc 
+box "App Data"
+participant DB_VM as dvm
+participant CloudBackup
+end box
+note over CloudBackup
+Yandex Cloud
+Backup Service
+end note
+note over dvm 
+CRON job makes pg_dumps
+from the db inside container 
+to host dir
+end note
+group Backup (Async) 
+CloudBackup ->> dvm: Pull db_dumps
+activate dvm
+dvm -->> CloudBackup: db_dumps data
+deactivate dvm
+end
+cl -> gate: Get Front Page
+activate gate
+hnote over s3
+Hosts all frontend data 
+end hnote
+gate -> s3: Get front Page
+activate s3
+s3 --> gate: Front Page Data
+deactivate s3
+gate --> cl: Front Page Data 
+deactivate gate
+cl -> gate: CRUD API requests
+activate gate
+hnote over sc 
+Yandex Serverless Container
+Hosts server code 
+for processing API endpoints
+end hnote
+gate -> sc: CRUD API requests
+activate sc
+hnote over dvm
+Ubuntu VM
+Runs Docker Contianer,
+which runs Postgres DB 
+end hnote
+sc ->  dvm: DB request
+activate dvm
+dvm --> sc: DB response
+deactivate dvm
+sc --> gate: CRUD op. response
+deactivate sc
+gate --> cl: CRUD op. response
+deactivate gate

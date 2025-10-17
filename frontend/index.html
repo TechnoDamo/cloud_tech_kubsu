@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50" x-data="schoolApp()">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-graduation-cap text-white text-2xl mr-3"></i>
+                    <h1 class="text-white text-xl font-bold">School Management System</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button @click="showNotification('System Online', 'success')" 
+                            class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-wifi mr-1"></i> Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Dashboard Header -->
+        <div class="px-4 py-6 sm:px-0">
+            <div class="border-4 border-dashed border-gray-200 rounded-lg p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Dashboard Overview</h2>
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-users text-blue-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Total Students</dt>
+                                        <dd class="text-lg font-medium text-gray-900" x-text="stats.students"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-chalkboard-teacher text-green-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Total Teachers</dt>
+                                        <dd class="text-lg font-medium text-gray-900" x-text="stats.teachers"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-door-open text-purple-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Total Classes</dt>
+                                        <dd class="text-lg font-medium text-gray-900" x-text="stats.classes"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-book text-orange-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Total Subjects</dt>
+                                        <dd class="text-lg font-medium text-gray-900" x-text="stats.subjects"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management Sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Classes Management -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-door-open text-blue-600 mr-2"></i>Classes Management
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadClasses()" 
+                                        class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View All Classes
+                                </button>
+                                <button @click="showClassForm = true" 
+                                        class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Add New Class
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Students Management -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-users text-green-600 mr-2"></i>Students Management
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadStudents()" 
+                                        class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View All Students
+                                </button>
+                                <button @click="showStudentForm = true" 
+                                        class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Add New Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teachers Management -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-chalkboard-teacher text-purple-600 mr-2"></i>Teachers Management
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadTeachers()" 
+                                        class="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View All Teachers
+                                </button>
+                                <button @click="showTeacherForm = true" 
+                                        class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Add New Teacher
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subjects Management -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-book text-orange-600 mr-2"></i>Subjects Management
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadSubjects()" 
+                                        class="w-full bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View All Subjects
+                                </button>
+                                <button @click="showSubjectForm = true" 
+                                        class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Add New Subject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lesson Schedules -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-calendar-alt text-indigo-600 mr-2"></i>Lesson Schedules
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadLessonSchedules()" 
+                                        class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View Schedules
+                                </button>
+                                <button @click="showScheduleForm = true" 
+                                        class="w-full bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Add Schedule
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance & Grades -->
+                    <div class="bg-white shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-clipboard-check text-teal-600 mr-2"></i>Attendance & Grades
+                            </h3>
+                            <div class="space-y-3">
+                                <button @click="loadStudentLessons()" 
+                                        class="w-full bg-teal-600 text-white px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200">
+                                    <i class="fas fa-list mr-2"></i>View Records
+                                </button>
+                                <button @click="showAttendanceForm = true" 
+                                        class="w-full bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-700 transition duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Record Attendance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals and Forms -->
+    <!-- Class Form Modal -->
+    <div x-show="showClassForm" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Class</h3>
+                <form @submit.prevent="createClass()">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Grade</label>
+                        <input type="number" x-model="newClass.grade" min="1" max="12" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Letter</label>
+                        <input type="text" x-model="newClass.letter" maxlength="1" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" @click="showClassForm = false" 
+                                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Create Class
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Form Modal -->
+    <div x-show="showStudentForm" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Student</h3>
+                <form @submit.prevent="createStudent()">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Class</label>
+                        <select x-model="newStudent.class_id" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select Class</option>
+                            <template x-for="cls in classes" :key="cls.id">
+                                <option :value="cls.id" x-text="`Grade ${cls.grade}${cls.letter}`"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">First Name</label>
+                        <input type="text" x-model="newStudent.first_name" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                        <input type="text" x-model="newStudent.last_name" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Patronymic</label>
+                        <input type="text" x-model="newStudent.patronymic"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" @click="showStudentForm = false" 
+                                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                            Create Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Display Modal -->
+    <div x-show="showDataModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" style="display: none;">
+        <div class="relative top-10 mx-auto p-5 border w-11/12 max-w-6xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900" x-text="currentDataTitle"></h3>
+                    <button @click="showDataModal = false" 
+                            class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <template x-for="header in currentDataHeaders" :key="header">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" x-text="header"></th>
+                                </template>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <template x-for="item in currentData" :key="item.id">
+                                <tr>
+                                    <template x-for="(value, key) in item" :key="key">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" x-text="value"></td>
+                                    </template>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button @click="editItem(item)" 
+                                                class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button @click="deleteItem(item)" 
+                                                class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div x-show="notification.show" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-x-full"
+         x-transition:enter-end="opacity-100 transform translate-x-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 transform translate-x-0"
+         x-transition:leave-end="opacity-0 transform translate-x-full"
+         class="fixed top-4 right-4 z-50 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden"
+         style="display: none;">
+        <div class="p-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-check-circle text-green-400" x-show="notification.type === 'success'"></i>
+                    <i class="fas fa-exclamation-circle text-red-400" x-show="notification.type === 'error'"></i>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                    <p class="text-sm font-medium text-gray-900" x-text="notification.message"></p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <button @click="notification.show = false" 
+                            class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

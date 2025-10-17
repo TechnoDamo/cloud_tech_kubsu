@@ -1,0 +1,151 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/v1/classes           --> school-api/internal/handlers.ClassHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/classes           --> school-api/internal/handlers.ClassHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/classes/:id       --> school-api/internal/handlers.ClassHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/classes/:id       --> school-api/internal/handlers.ClassHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/classes/:id       --> school-api/internal/handlers.ClassHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/students          --> school-api/internal/handlers.StudentHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/students          --> school-api/internal/handlers.StudentHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/students/:id      --> school-api/internal/handlers.StudentHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/students/:id      --> school-api/internal/handlers.StudentHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/students/:id      --> school-api/internal/handlers.StudentHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/teachers          --> school-api/internal/handlers.TeacherHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/teachers          --> school-api/internal/handlers.TeacherHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/teachers/:id      --> school-api/internal/handlers.TeacherHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/teachers/:id      --> school-api/internal/handlers.TeacherHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/teachers/:id      --> school-api/internal/handlers.TeacherHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/subjects          --> school-api/internal/handlers.SubjectHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/subjects          --> school-api/internal/handlers.SubjectHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/subjects/:id      --> school-api/internal/handlers.SubjectHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/subjects/:id      --> school-api/internal/handlers.SubjectHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/subjects/:id      --> school-api/internal/handlers.SubjectHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/teacher-assignments --> school-api/internal/handlers.TeacherAssignmentHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/teacher-assignments --> school-api/internal/handlers.TeacherAssignmentHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/teacher-assignments/:id --> school-api/internal/handlers.TeacherAssignmentHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/teacher-assignments/:id --> school-api/internal/handlers.TeacherAssignmentHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/teacher-assignments/:id --> school-api/internal/handlers.TeacherAssignmentHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/lesson-schedules  --> school-api/internal/handlers.LessonScheduleHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/lesson-schedules  --> school-api/internal/handlers.LessonScheduleHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/lesson-schedules/:id --> school-api/internal/handlers.LessonScheduleHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/lesson-schedules/:id --> school-api/internal/handlers.LessonScheduleHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/lesson-schedules/:id --> school-api/internal/handlers.LessonScheduleHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/lesson-logs       --> school-api/internal/handlers.LessonLogHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/lesson-logs       --> school-api/internal/handlers.LessonLogHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/lesson-logs/:id   --> school-api/internal/handlers.LessonLogHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/lesson-logs/:id   --> school-api/internal/handlers.LessonLogHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/lesson-logs/:id   --> school-api/internal/handlers.LessonLogHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/student-lessons   --> school-api/internal/handlers.StudentLessonHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/student-lessons   --> school-api/internal/handlers.StudentLessonHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/student-lessons/:id --> school-api/internal/handlers.StudentLessonHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/student-lessons/:id --> school-api/internal/handlers.StudentLessonHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/student-lessons/:id --> school-api/internal/handlers.StudentLessonHandler.Delete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/attendance-statuses --> school-api/internal/handlers.AttendanceStatusHandler.List-fm (3 handlers)
+[GIN-debug] POST   /api/v1/attendance-statuses --> school-api/internal/handlers.AttendanceStatusHandler.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/attendance-statuses/:code --> school-api/internal/handlers.AttendanceStatusHandler.Get-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/attendance-statuses/:code --> school-api/internal/handlers.AttendanceStatusHandler.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/attendance-statuses/:code --> school-api/internal/handlers.AttendanceStatusHandler.Delete-fm (3 handlers)
+[GIN] 2025/09/20 - 11:42:26 | 404 |         540ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         240ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         254ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         159ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         209ns |             ::1 | OPTIONS  "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         245ns |             ::1 | OPTIONS  "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         172ns |             ::1 | OPTIONS  "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:42:26 | 404 |        1.63µs |             ::1 | OPTIONS  "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:42:26 | 404 |         128ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:42:40 | 200 |    1.856847ms |             ::1 | GET      "/api/v1/classes"
+[GIN] 2025/09/20 - 11:42:47 | 200 |    1.481369ms |             ::1 | GET      "/api/v1/classes"
+[GIN] 2025/09/20 - 11:42:47 | 200 |    2.365267ms |             ::1 | GET      "/api/v1/students"
+[GIN] 2025/09/20 - 11:42:47 | 200 |      473.54µs |             ::1 | GET      "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:42:52 | 200 |    2.201369ms |             ::1 | GET      "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:42:52 | 200 |     344.372µs |             ::1 | GET      "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:42:52 | 200 |     597.635µs |             ::1 | GET      "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:42:57 | 200 |    1.548413ms |             ::1 | GET      "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:42:57 | 200 |     442.674µs |             ::1 | GET      "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:42:57 | 200 |     1.10523ms |             ::1 | GET      "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:43:03 | 400 |      116.16µs |             ::1 | POST     "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:43:08 | 400 |      41.676µs |             ::1 | POST     "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:43:11 | 404 |       1.059µs |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         268ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         269ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         343ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         468ns |             ::1 | OPTIONS  "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         277ns |             ::1 | OPTIONS  "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         621ns |             ::1 | OPTIONS  "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         691ns |             ::1 | OPTIONS  "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:43:11 | 404 |         272ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:43:19 | 201 |   14.293891ms |             ::1 | POST     "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:43:32 | 201 |   11.958418ms |             ::1 | POST     "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:43:36 | 201 |   14.362438ms |             ::1 | POST     "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:43:40 | 201 |   11.843702ms |             ::1 | POST     "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:43:45 | 201 |   12.339275ms |             ::1 | POST     "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:43:49 | 201 |   15.649393ms |             ::1 | POST     "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:43:54 | 200 |    1.593647ms |             ::1 | GET      "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:43:54 | 200 |     253.979µs |             ::1 | GET      "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:43:54 | 200 |     412.024µs |             ::1 | GET      "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:43:59 | 200 |    1.424989ms |             ::1 | GET      "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:43:59 | 200 |     302.645µs |             ::1 | GET      "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:43:59 | 200 |     262.001µs |             ::1 | GET      "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:44:09 | 200 |   12.562822ms |             ::1 | PUT      "/api/v1/teachers/1"
+[GIN] 2025/09/20 - 11:44:14 | 204 |   11.401338ms |             ::1 | DELETE   "/api/v1/student-lessons/1"
+[GIN] 2025/09/20 - 11:44:18 | 200 |    1.368663ms |             ::1 | GET      "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:44:23 | 200 |    1.493233ms |             ::1 | GET      "/api/v1/teachers/1"
+[GIN] 2025/09/20 - 11:44:23 | 200 |     504.546µs |             ::1 | GET      "/api/v1/classes/1"
+[GIN] 2025/09/20 - 11:44:35 | 200 |    1.416467ms |             ::1 | GET      "/api/v1/classes"
+[GIN] 2025/09/20 - 11:44:35 | 200 |      308.85µs |             ::1 | GET      "/api/v1/classes"
+[GIN] 2025/09/20 - 11:44:35 | 200 |    1.386374ms |             ::1 | GET      "/api/v1/students"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     256.979µs |             ::1 | GET      "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:44:36 | 200 |      315.28µs |             ::1 | GET      "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     261.205µs |             ::1 | GET      "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     282.348µs |             ::1 | GET      "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     303.378µs |             ::1 | GET      "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     271.689µs |             ::1 | GET      "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:44:36 | 200 |     342.903µs |             ::1 | GET      "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:44:57 | 404 |       1.497µs |             ::1 | OPTIONS  "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:45:02 | 404 |       1.178µs |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:02 | 404 |         670ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:45:02 | 404 |         451ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:45:02 | 404 |         455ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:45:02 | 404 |         656ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:02 | 404 |         447ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         760ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         504ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         447ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         295ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         393ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:20 | 404 |         329ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         482ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         162ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         135ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         269ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         134ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:28 | 404 |         145ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:45:43 | 404 |       1.155µs |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:45:44 | 404 |         648ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:12 | 404 |       1.137µs |       127.0.0.1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:12 | 404 |         471ns |       127.0.0.1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:46:12 | 404 |         257ns |       127.0.0.1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:46:12 | 404 |         142ns |       127.0.0.1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:46:12 | 404 |         107ns |       127.0.0.1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:46:12 | 404 |         472ns |       127.0.0.1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:23 | 200 |    1.529996ms |             ::1 | GET      "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:28 | 404 |       1.133µs |       127.0.0.1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         200ns |       127.0.0.1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         301ns |       127.0.0.1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         202ns |       127.0.0.1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         143ns |       127.0.0.1 | OPTIONS  "/api/v1/lesson-schedules"
+[GIN] 2025/09/20 - 11:46:28 | 404 |          97ns |       127.0.0.1 | OPTIONS  "/api/v1/teacher-assignments"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         164ns |       127.0.0.1 | OPTIONS  "/api/v1/lesson-logs"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         162ns |       127.0.0.1 | OPTIONS  "/api/v1/student-lessons"
+[GIN] 2025/09/20 - 11:46:28 | 404 |         103ns |       127.0.0.1 | OPTIONS  "/api/v1/attendance-statuses"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         477ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         312ns |             ::1 | OPTIONS  "/api/v1/students"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         179ns |             ::1 | OPTIONS  "/api/v1/teachers"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         242ns |             ::1 | OPTIONS  "/api/v1/subjects"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         251ns |             ::1 | OPTIONS  "/api/v1/classes"
+[GIN] 2025/09/20 - 11:46:55 | 404 |         182ns |             ::1 | OPTIONS  "/api/v1/attendance-statuses"

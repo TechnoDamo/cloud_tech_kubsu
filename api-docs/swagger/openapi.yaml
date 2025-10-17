@@ -2,6 +2,7 @@
 openapi: 3.0.3
 info:
   title: School Management API
+  version: 1.0.0
   description: |
     A comprehensive REST API for managing school operations including classes, students, teachers, subjects, lesson schedules, and attendance tracking.
     
@@ -24,9 +25,7 @@ info:
     - StudentLessons track individual student participation, grades, and attendance
     
 servers:
-  - url: https://technodamo.github.io/cloud_tech_kubsu/api-docs/swagger/
-    description: GitHub Pages server (Production)
-  - url: http://localhost:8000/api/v1
+  - url: https://d5ds9jru50sk4al4aiaa.svoluuab.apigw.yandexcloud.net
     description: Local development server
 tags:
   - name: Classes
@@ -47,8 +46,9 @@ tags:
     description: Student participation, grades, and attendance
   - name: AttendanceStatuses
     description: Allowed attendance codes
+    
 paths:
-  /classes:
+  /api/v1/classes:
     get:
       tags:
         - Classes
@@ -119,7 +119,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/classes/{id}":
+  "/api/v1/classes/{id}":
     get:
       tags:
         - Classes
@@ -197,7 +197,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
   
-  /students:
+  /api/v1/students:
     get:
       tags:
         - Students
@@ -276,7 +276,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/students/{id}":
+  "/api/v1/students/{id}":
     get:
       tags:
         - Students
@@ -354,7 +354,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
   
-  /teachers:
+  /api/v1/teachers:
     get:
       tags:
         - Teachers
@@ -428,7 +428,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/teachers/{id}":
+  "/api/v1/teachers/{id}":
     get:
       tags:
         - Teachers
@@ -506,7 +506,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
   
-  /subjects:
+  /api/v1/subjects:
     get:
       tags:
         - Subjects
@@ -575,7 +575,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/subjects/{id}":
+  "/api/v1/subjects/{id}":
     get:
       tags:
         - Subjects
@@ -653,7 +653,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
  
-  /teacher-assignments:
+  /api/v1/teacher-assignments:
     get:
       tags:
         - TeacherAssignments
@@ -727,7 +727,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/teacher-assignments/{id}":
+  "/api/v1/teacher-assignments/{id}":
     get:
       tags:
         - TeacherAssignments
@@ -805,7 +805,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
  
-  /lesson-logs:
+  /api/v1/lesson-logs:
     get:
       tags:
         - LessonLogs
@@ -896,7 +896,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/lesson-logs/{id}":
+  "/api/v1/lesson-logs/{id}":
     get:
       tags:
         - LessonLogs
@@ -974,7 +974,7 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
  
-  /student-lessons:
+  /api/v1/student-lessons:
     get:
       tags:
         - StudentLessons
@@ -1000,8 +1000,10 @@ paths:
           name: attendance_status
           schema:
             type: string
+            minLength: 1
             maxLength: 1
-          description: Filter by attendance status
+            pattern: "^[PALES]$"
+          description: Filter by attendance status (P, A, L, E, S)
         - in: query
           name: has_grade
           schema:
@@ -1064,7 +1066,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/student-lessons/{id}":
+  "/api/v1/student-lessons/{id}":
     get:
       tags:
         - StudentLessons
@@ -1141,7 +1143,7 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  /lesson-schedules:
+  /api/v1/lesson-schedules:
     get:
       tags:
         - LessonSchedule
@@ -1167,9 +1169,9 @@ paths:
           name: weekday
           schema:
             type: integer
-            minimum: 0
-            maximum: 6
-          description: Filter by weekday (0=Sunday, 6=Saturday)
+            minimum: 1
+            maximum: 7
+          description: Filter by weekday (1=Monday, 7=Sunday)
         - in: query
           name: page
           schema:
@@ -1227,7 +1229,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/lesson-schedules/{id}":
+  "/api/v1/lesson-schedules/{id}":
     get:
       tags:
         - LessonSchedule
@@ -1246,6 +1248,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LessonSchedule"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
           $ref: "#/components/responses/NotFound"
         "500":
@@ -1296,12 +1300,14 @@ paths:
       responses:
         "204":
           description: Lesson schedule deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "404":
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
 
-  /attendance-statuses:
+  /api/v1/attendance-statuses:
     get:
       tags:
         - AttendanceStatuses
@@ -1365,7 +1371,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/attendance-statuses/{code}":
+  "/api/v1/attendance-statuses/{code}":
     get:
       tags:
         - AttendanceStatuses
@@ -1585,9 +1591,9 @@ components:
           description: ID of the subject
         weekday:
           type: integer
-          minimum: 0
-          maximum: 6
-          description: Day of the week (0=Sunday, 6=Saturday)
+          minimum: 1
+          maximum: 7
+          description: Day of the week (1=Monday, 7=Sunday)
         number:
           type: integer
           minimum: 1
@@ -1667,13 +1673,14 @@ components:
           type: integer
           minimum: 1
           maximum: 5
+          nullable: true
           description: Grade received (1-5, null if not graded)
         attendance_status:
           type: string
           minLength: 1
           maxLength: 1
-          pattern: "^[PAL]$"
-          description: Attendance status (P=Present, A=Absent, L=Late)
+          pattern: "^[PALES]$"
+          description: Attendance status (P=Present, A=Absent, L=Late, E=Excused, S=Sick)
       required:
         - student_id
         - lesson_id
@@ -1692,7 +1699,7 @@ components:
           type: string
           minLength: 1
           maxLength: 1
-          pattern: "^[PAL]$"
+          pattern: "^[PALES]$"
           description: Single character code for attendance status
         description:
           type: string
@@ -1803,9 +1810,9 @@ components:
           description: ID of the subject
         weekday:
           type: integer
-          minimum: 0
-          maximum: 6
-          description: Day of the week (0=Sunday, 6=Saturday)
+          minimum: 1
+          maximum: 7
+          description: Day of the week (1=Monday, 7=Sunday)
         number:
           type: integer
           minimum: 1
@@ -1870,8 +1877,8 @@ components:
           type: string
           minLength: 1
           maxLength: 1
-          pattern: "^[PAL]$"
-          description: Attendance status (P=Present, A=Absent, L=Late)
+          pattern: "^[PALES]$"
+          description: Attendance status (P=Present, A=Absent, L=Late, E=Excused, S=Sick)
       required:
         - student_id
         - lesson_id
@@ -1884,7 +1891,7 @@ components:
           type: string
           minLength: 1
           maxLength: 1
-          pattern: "^[PAL]$"
+          pattern: "^[PALES]$"
           description: Single character code for attendance status
         description:
           type: string

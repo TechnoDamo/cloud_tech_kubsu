@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .demo-card {
+            transition: all 0.3s ease;
+        }
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50" x-data="demoApp()">
+    <!-- Hero Section -->
+    <div class="gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                    School Management System
+                </h1>
+                <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                    A comprehensive solution for managing students, teachers, classes, schedules, and attendance with modern web technologies.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="index.html" 
+                       class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-200">
+                        <i class="fas fa-play mr-2"></i>Launch Dashboard
+                    </a>
+                    <a href="advanced.html" 
+                       class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+                        <i class="fas fa-chart-line mr-2"></i>Advanced Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Key Features</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Everything you need to manage a modern school efficiently
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Student Management -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-blue-600 mx-auto mb-6">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Student Management</h3>
+                <p class="text-gray-600 mb-6">
+                    Complete student enrollment, class assignment, and profile management with attendance tracking.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Student registration</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Class assignment</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Profile management</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Attendance tracking</li>
+                </ul>
+            </div>
+
+            <!-- Teacher Management -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-green-600 mx-auto mb-6">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Teacher Management</h3>
+                <p class="text-gray-600 mb-6">
+                    Manage teacher profiles, subject assignments, and workload distribution across classes.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Teacher profiles</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Subject assignments</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Workload tracking</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Performance analytics</li>
+                </ul>
+            </div>
+
+            <!-- Class Management -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-purple-600 mx-auto mb-6">
+                    <i class="fas fa-door-open"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Class Management</h3>
+                <p class="text-gray-600 mb-6">
+                    Organize classes by grade and letter, manage student distribution and class performance.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Class creation</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Student distribution</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Performance tracking</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Grade management</li>
+                </ul>
+            </div>
+
+            <!-- Schedule Management -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-orange-600 mx-auto mb-6">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Schedule Management</h3>
+                <p class="text-gray-600 mb-6">
+                    Visual weekly schedule grid with drag-and-drop functionality for easy timetable management.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Visual schedule grid</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Drag-and-drop editing</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Conflict detection</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Export capabilities</li>
+                </ul>
+            </div>
+
+            <!-- Attendance Tracking -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-teal-600 mx-auto mb-6">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Attendance Tracking</h3>
+                <p class="text-gray-600 mb-6">
+                    Comprehensive attendance system with multiple status codes and grade recording.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Multiple status codes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Grade recording</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Report generation</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Parent notifications</li>
+                </ul>
+            </div>
+
+            <!-- Analytics & Reports -->
+            <div class="demo-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="feature-icon bg-red-600 mx-auto mb-6">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Analytics & Reports</h3>
+                <p class="text-gray-600 mb-6">
+                    Interactive dashboards with charts and reports for data-driven decision making.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Interactive charts</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Performance analytics</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Custom reports</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Data export</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Technology Stack</h2>
+                <p class="text-lg text-gray-600">
+                    Built with modern web technologies for performance and scalability
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <i class="fab fa-html5 text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="font-semibold text-gray-900">HTML5</h3>
+                        <p class="text-sm text-gray-600">Semantic markup</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <i class="fab fa-css3-alt text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="font-semibold text-gray-900">CSS3</h3>
+                        <p class="text-sm text-gray-600">Modern styling</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <i class="fab fa-js-square text-4xl text-yellow-500 mb-4"></i>
+                        <h3 class="font-semibold text-gray-900">JavaScript</h3>
+                        <p class="text-sm text-gray-600">Interactive features</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <i class="fas fa-palette text-4xl text-cyan-500 mb-4"></i>
+                        <h3 class="font-semibold text-gray-900">Tailwind CSS</h3>
+                        <p class="text-sm text-gray-600">Utility-first CSS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Integration -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">API Integration</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                RESTful API with comprehensive CRUD operations for all entities
+            </p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Available Endpoints</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-mono text-sm">GET /api/v1/classes</span>
+                            <span class="text-green-600 text-sm">✓ Active</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-mono text-sm">GET /api/v1/students</span>
+                            <span class="text-green-600 text-sm">✓ Active</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-mono text-sm">GET /api/v1/teachers</span>
+                            <span class="text-green-600 text-sm">✓ Active</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-mono text-sm">GET /api/v1/subjects</span>
+                            <span class="text-green-600 text-sm">✓ Active</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-mono text-sm">GET /api/v1/lesson-schedules</span>
+                            <span class="text-green-600 text-sm">✓ Active</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">API Features</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <span>RESTful design principles</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <span>JSON data format</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <span>Comprehensive error handling</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <span>Input validation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                            <span>Database relationships</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Getting Started -->
+    <div class="bg-blue-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Getting Started</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Follow these simple steps to get the School Management System running
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Start the API</h3>
+                    <p class="text-gray-600 text-sm">
+                        Run the Go API server with the correct database configuration
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-blue-600">2</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Open the Frontend</h3>
+                    <p class="text-gray-600 text-sm">
+                        Open index.html in your web browser to access the dashboard
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-blue-600">3</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Start Managing</h3>
+                    <p class="text-gray-600 text-sm">
+                        Create classes, add students, and start managing your school
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">School Management System</h3>
+                <p class="text-gray-400 mb-6">
+                    A modern solution for educational institutions
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition duration-200">
+                        <i class="fas fa-home mr-2"></i>Dashboard
+                    </a>
+                    <a href="advanced.html" class="text-gray-400 hover:text-white transition duration-200">
+                        <i class="fas fa-chart-line mr-2"></i>Analytics
+                    </a>
+                    <a href="README.md" class="text-gray-400 hover:text-white transition duration-200">
+                        <i class="fas fa-book mr-2"></i>Documentation
+                    </a>
+                </div>
+                <div class="mt-8 pt-8 border-t border-gray-800">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 School Management System. Built for educational purposes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function demoApp() {
+            return {
+                init() {
+                    // Demo initialization
+                    console.log('School Management System Demo loaded');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
